@@ -111,7 +111,7 @@ void SDS011::sleep() {
 
 		int len = 0;
 		while ((sds_data->available() > 0) && (sds_data->available() >= (10-len))) {
-			buffer[len]sds_data->read();
+			buffer[len] = sds_data->read();
 			len++;
 			if(len == 10){
 				bool commandCheck = buffer[1] == 0xC5;
