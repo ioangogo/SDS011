@@ -101,27 +101,11 @@ int SDS011::read(float *p25, float *p10) {
 // SDS011:sleep
 // --------------------------------------------------------
 void SDS011::sleep() {
-	bool sleepNotConfirmed = true;
-	byte buffer[10];
-	while (sleepNotConfirmed){
-		for (uint8_t i = 0; i < 19; i++) {
+	for (uint8_t i = 0; i < 19; i++) {
 			sds_data->write(SLEEPCMD[i]);
 		}
 		sds_data->flush();
-
-		int len = 0;
-		while ((sds_data->available() > 0) && (sds_data->available() >= (10-len))) {
-			buffer[len] = sds_data->read();
-			len++;
-			if(len == 10){
-				bool commandCheck = buffer[1] == 0xC5;
-				bool stateCheck = buffer[3] == 0x01;
-				if(commandCheck && stateCheck){
-					sleepNotConfirmed = false;
-				}
-			}
-		}
-	}
+		sds_data->read();
 }
 
 
